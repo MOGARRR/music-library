@@ -50,28 +50,54 @@ const library = {
 // // t01: Code Monkey by Jonathan Coulton (Thing a Week Three)
 // // t02: Model View Controller by James Dempsey (WWDC 2003)
 // // t03: Four Thirty-Three by John Cage (Woodstock 1952)
-const printTracks = function(library) {
-       const libraryValue = Object.values(library);
-       const output = [];
-       const tracks = libraryValue[0];
-       for (const part in tracks){
-              const track = tracks[part];
-              output.push(`${track.id}: ${track.name} by ${track.artist} (${track.album})`);
-       }
-       return output.join('\n');
-}
-const result2 = printTracks(library);
-console.log(result2);
+// const printTracks = function(library) {
+//        const libraryValue = Object.values(library);
+//        const output = [];
+//        const tracksBox = libraryValue[0];
+//        for (const parts in tracksBox){
+//               const track = tracksBox[parts];
+//               output.push(`${track.id}: ${track.name} by ${track.artist} (${track.album})`);
+//        }
+//        return output.join('\n');
+// }
+// const result2 = printTracks(library);
+// console.log(result2);
 
 
 // // prints a list of tracks for a given playlist, using the following format:
 // // p01: Coding Music - 2 tracks
 // // t01: Code Monkey by Jonathan Coulton (Thing a Week Three)
 // // t02: Model View Controller by James Dempsey (WWDC 2003)
-// const printPlaylist = function(playlistId) {
+const printPlaylist = function(playlistId,library) {
+       const output = [];
+       let trackList;
+       const libraryValue = Object.values(library);
+       const playListBox = libraryValue[1];
+       const tracksBox = libraryValue[0];
+       for (const parts in playListBox){
+              const playList = playListBox[parts];
+              if (playList.id === playlistId){
+                     trackList = playList.tracks;
+                     trackList.length < 2 ? output.push(`${playList.id}: ${playList.name} - ${trackList.length} track`) 
+                     : output.push(`${playList.id}: ${playList.name} - ${trackList.length} tracks`);
+              }
+       }
+       for (const parts in tracksBox){
+              const track = tracksBox[parts];
+              if (trackList.includes(track.id)){
+                     output.push(`${track.id}: ${track.name} by ${track.artist} (${track.album})`)
+              }
 
-// }
+       }
+       return output.join('\n');
 
+}
+
+const result3 = printPlaylist('p01',library);
+console.log(result3);
+console.log('------')
+const result4 = printPlaylist('p02',library);
+console.log(result4);
 
 // // adds an existing track to an existing playlist
 // const addTrackToPlaylist = function(trackId, playlistId) {
