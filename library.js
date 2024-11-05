@@ -30,29 +30,38 @@ const library = {
 // prints a list of all playlists, in the form:
 // p01: Coding Music - 2 tracks
 // p02: Other Playlist - 1 tracks
-const printPlaylists = function(library) {
-       const output = [];
-       const libraryValue = Object.values(library);
-       const playListsBox = libraryValue[1];
-       for (const parts in playListsBox){
-              const playList = playListsBox[parts];
-              const tracks = playList.tracks;
-              output.push(`${playList.id}: ${playList.name} - ${tracks.length} tracks`);
-       }
+// const printPlaylists = function(library) {
+//        const output = [];
+//        const libraryValue = Object.values(library);
+//        const playListsBox = libraryValue[1];
+//        for (const parts in playListsBox){
+//               const playList = playListsBox[parts];
+//               const tracks = playList.tracks;
+//               output.push(`${playList.id}: ${playList.name} - ${tracks.length} tracks`);
+//        }
 
-       return output.join('\n');
-}
-const result1 = printPlaylists(library);
-console.log(result1);
+//        return output.join('\n');
+// }
+// const result1 = printPlaylists(library);
+// console.log(result1);
 
 
 // // prints a list of all tracks, using the following format:
 // // t01: Code Monkey by Jonathan Coulton (Thing a Week Three)
 // // t02: Model View Controller by James Dempsey (WWDC 2003)
 // // t03: Four Thirty-Three by John Cage (Woodstock 1952)
-// const printTracks = function() {
-
-// }
+const printTracks = function(library) {
+       const libraryValue = Object.values(library);
+       const output = [];
+       const tracks = libraryValue[0];
+       for (const part in tracks){
+              const track = tracks[part];
+              output.push(`${track.id}: ${track.name} by ${track.artist} (${track.album})`);
+       }
+       return output.join('\n');
+}
+const result2 = printTracks(library);
+console.log(result2);
 
 
 // // prints a list of tracks for a given playlist, using the following format:
