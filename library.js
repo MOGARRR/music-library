@@ -20,8 +20,108 @@ const library = {
                       name: "Other Playlist",
                       tracks: ["t03"]
                     }
-             }
+             },
+  printPlaylists: function () {
+              const output = [];
+              const libraryValue = Object.values(this);
+              const playListsBox = libraryValue[1];
+              for (const parts in playListsBox){
+                     const playList = playListsBox[parts];
+                     const tracks = playList.tracks;
+                     output.push(`${playList.id}: ${playList.name} - ${tracks.length} tracks`);
+              }
+              return output.join('\n');
+       },
+  printTracks: function () {
+                     const libraryValue = Object.values(this);
+                     const output = [];
+                     const tracksBox = libraryValue[0];
+                     for (const parts in tracksBox){
+                            const track = tracksBox[parts];
+                            output.push(`${track.id}: ${track.name} by ${track.artist} (${track.album})`);
+                     }
+                     return output.join('\n');
+              },
+  printPlaylist: function (playlistId) {
+                     const output = [];
+                     let trackList;
+                     const libraryValue = Object.values(this);
+                     const playListBox = libraryValue[1];
+                     const tracksBox = libraryValue[0];
+                     for (const parts in playListBox){
+                            const playList = playListBox[parts];
+                            if (playList.id === playlistId){
+                                   trackList = playList.tracks;
+                                   trackList.length < 2 ? output.push(`${playList.id}: ${playList.name} - ${trackList.length} track`) 
+                                   : output.push(`${playList.id}: ${playList.name} - ${trackList.length} tracks`);
+                            }
+                     }
+                     for (const parts in tracksBox){
+                            const track = tracksBox[parts];
+                            if (trackList.includes(track.id)){
+                                   output.push(`${track.id}: ${track.name} by ${track.artist} (${track.album})`)
+                            }
+                     
+                     }
+                     return output.join('\n');
+                     
+              },
+  addTrackToPlaylist: function (trackId, playlistId) {
+                     const libraryValue = Object.values(this);
+                     const tracksBox = libraryValue[0];
+                     const playListBox = libraryValue[1];
+                     let addTrack;
+                     for (const parts in tracksBox){
+                            const track = tracksBox[parts];
+                            if (track.id === trackId){
+                                   addTrack = track.id;
+                            }
+                     }
+                     for (const parts in playListBox){
+                            const playList = playListBox[parts];
+                            if (playList.id === playlistId){
+                                   playList.tracks.push(addTrack);
+                            }
+                     }
+                     return playListBox;
+              },
+  generateUid: function () {
+       return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+       },
+  addTrack: function (name, artist, album) {
+              const trackObj = { id: this.generateUid(), name: name, artist: artist, album: album };
+              const libraryValue = Object.values(this);
+              const tracksBox = libraryValue[0];
+              let trackNum = this.tracksInLibrary(tracksBox);
+              tracksBox[trackNum] = trackObj;
+              return tracksBox;
+       },
+  tracksInLibrary: function(tracksBox) {
+              let num = 1;
+              for (const tracks in tracksBox){
+                     num++
+              }
+              num < 10 ? num = `t0${num}` : num = `t${num}`;
+              return num;
+       },
+  addPlaylist: function (name) {
+              const playList0bj = {id: this.generateUid(), name:name, tracks:[]}
+              const libraryValue = Object.values(this);
+              const playListBox = libraryValue[1];
+              let playListNum = this.playListsInLibrary(playListBox);
+              playListBox[playListNum] = playList0bj;
+              return playListBox;
+       },
+  playListsInLibrary: function (playListsBox) {
+              let num = 1;
+              for (const playList in playListsBox){
+                     num++
+              }
+              num < 10 ? num = `p0${num}` : num = `p${num}`;
+              return num;
+       }
 };
+
 
 /////////////////////////////
 // FUNCTIONS TO IMPLEMENT:
@@ -30,151 +130,48 @@ const library = {
 // prints a list of all playlists, in the form:
 // p01: Coding Music - 2 tracks
 // p02: Other Playlist - 1 tracks
-const printPlaylists = function() {
-       const output = [];
-       const libraryValue = Object.values(library);
-       const playListsBox = libraryValue[1];
-       for (const parts in playListsBox){
-              const playList = playListsBox[parts];
-              const tracks = playList.tracks;
-              output.push(`${playList.id}: ${playList.name} - ${tracks.length} tracks`);
-       }
 
-       return output.join('\n');
-}
-const result1 = printPlaylists();
-console.log(result1);
+//console.log(library.printPlaylists());
 
 
-// prints a list of all tracks, using the following format:
-// t01: Code Monkey by Jonathan Coulton (Thing a Week Three)
-// t02: Model View Controller by James Dempsey (WWDC 2003)
-// t03: Four Thirty-Three by John Cage (Woodstock 1952)
-const printTracks = function() {
-       const libraryValue = Object.values(library);
-       const output = [];
-       const tracksBox = libraryValue[0];
-       for (const parts in tracksBox){
-              const track = tracksBox[parts];
-              output.push(`${track.id}: ${track.name} by ${track.artist} (${track.album})`);
-       }
-       return output.join('\n');
-}
-const result2 = printTracks();
-console.log(result2);
-
-
-// // prints a list of tracks for a given playlist, using the following format:
-// // p01: Coding Music - 2 tracks
+// // prints a list of all tracks, using the following format:
 // // t01: Code Monkey by Jonathan Coulton (Thing a Week Three)
 // // t02: Model View Controller by James Dempsey (WWDC 2003)
-const printPlaylist = function(playlistId) {
-       const output = [];
-       let trackList;
-       const libraryValue = Object.values(library);
-       const playListBox = libraryValue[1];
-       const tracksBox = libraryValue[0];
-       for (const parts in playListBox){
-              const playList = playListBox[parts];
-              if (playList.id === playlistId){
-                     trackList = playList.tracks;
-                     trackList.length < 2 ? output.push(`${playList.id}: ${playList.name} - ${trackList.length} track`) 
-                     : output.push(`${playList.id}: ${playList.name} - ${trackList.length} tracks`);
-              }
-       }
-       for (const parts in tracksBox){
-              const track = tracksBox[parts];
-              if (trackList.includes(track.id)){
-                     output.push(`${track.id}: ${track.name} by ${track.artist} (${track.album})`)
-              }
+// // t03: Four Thirty-Three by John Cage (Woodstock 1952)
 
-       }
-       return output.join('\n');
+//console.log(library.printTracks());
 
-}
+// // // prints a list of tracks for a given playlist, using the following format:
+// // // p01: Coding Music - 2 tracks
+// // // t01: Code Monkey by Jonathan Coulton (Thing a Week Three)
+// // // t02: Model View Controller by James Dempsey (WWDC 2003)
 
-// const result3 = printPlaylist('p01');
-// console.log(result3);
+// console.log(library.printPlaylist('p01'));
 // console.log('------')
-// const result4 = printPlaylist('p02');
-// console.log(result4);
-
-// // adds an existing track to an existing playlist
-const addTrackToPlaylist = function(trackId, playlistId) {
-       const libraryValue = Object.values(library);
-       const tracksBox = libraryValue[0];
-       const playListBox = libraryValue[1];
-       let addTrack;
-       for (const parts in tracksBox){
-              const track = tracksBox[parts];
-              if (track.id === trackId){
-                     addTrack = track.id;
-              }
-       }
-       for (const parts in playListBox){
-              const playList = playListBox[parts];
-              if (playList.id === playlistId){
-                     playList.tracks.push(addTrack);
-              }
-       }
-       return playListBox;
-}
-// const result5 = addTrackToPlaylist('t03','p01');
-// console.table(result5);
-// const result6 = addTrackToPlaylist('t02','p02');
-// console.table(result6);
+// console.log(library.printPlaylist('p02'));
 
 
-// // generates a unique id
-// // (already implemented: use this for addTrack and addPlaylist)
-const generateUid = function() {
-  return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-}
+// // // adds an existing track to an existing playlist
 
-//adds a track to the library
-const addTrack = function(name, artist, album) {
-       const trackObj = { id: generateUid(), name: name, artist: artist, album: album };
-       const libraryValue = Object.values(library);
-       const tracksBox = libraryValue[0];
-       let trackNum = tracksInLibrary(tracksBox);
-       tracksBox[trackNum] = trackObj;
-       return tracksBox
-}
-const tracksInLibrary = (tracksBox) => {
-       let num = 1;
-       for (const tracks in tracksBox){
-              num++
-       }
-       num < 10 ? num = `t0${num}` : num = `t${num}`;
-       return num
-}
-// const result7 = addTrack('Doritos & Fritos','100 Gecs','10,000 Gecs');
-// console.table(result7);
+// console.log(library.addTrackToPlaylist('t03','p01'));
+// console.table(library.playlists);
+// console.log('------')
+// console.log(library.addTrackToPlaylist('t02','p02'));
+// console.table(library.playlists);
 
+// // // generates a unique id
+// // // (already implemented: use this for addTrack and addPlaylist)
+// const generateUid = function() {
+//   return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+// }
 
-// adds a playlist to the library
-const addPlaylist = function(name) {
-       const playList0bj = {id: generateUid(), name:name, tracks:[]}
-       const libraryValue = Object.values(library);
-       const playListBox = libraryValue[1];
-       let playListNum = playListsInLibrary(playListBox);
-       playListBox[playListNum] = playList0bj;
-       // test it works like playlist
-       addTrackToPlaylist('t01',playList0bj.id);
-       return playListBox;
-}
-const playListsInLibrary = (playListsBox) => {
-       let num = 1;
-       for (const playList in playListsBox){
-              num++
-       }
-       num < 10 ? num = `p0${num}` : num = `p${num}`;
-       return num;
-}
+// //adds a track to the library
 
-// const result8 = addPlaylist('Bananas');
-// console.table(result8);
+// console.table(library.addTrack('Doritos & Fritos','100 Gecs','10,000 Gecs'));
 
+// // adds a playlist to the library
+
+//console.table(library.addPlaylist('Bananas'));
 
 
 
