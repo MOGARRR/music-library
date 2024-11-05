@@ -30,68 +30,68 @@ const library = {
 // prints a list of all playlists, in the form:
 // p01: Coding Music - 2 tracks
 // p02: Other Playlist - 1 tracks
-// const printPlaylists = function() {
-//        const output = [];
-//        const libraryValue = Object.values(library);
-//        const playListsBox = libraryValue[1];
-//        for (const parts in playListsBox){
-//               const playList = playListsBox[parts];
-//               const tracks = playList.tracks;
-//               output.push(`${playList.id}: ${playList.name} - ${tracks.length} tracks`);
-//        }
+const printPlaylists = function() {
+       const output = [];
+       const libraryValue = Object.values(library);
+       const playListsBox = libraryValue[1];
+       for (const parts in playListsBox){
+              const playList = playListsBox[parts];
+              const tracks = playList.tracks;
+              output.push(`${playList.id}: ${playList.name} - ${tracks.length} tracks`);
+       }
 
-//        return output.join('\n');
-// }
-// const result1 = printPlaylists();
-// console.log(result1);
+       return output.join('\n');
+}
+const result1 = printPlaylists();
+console.log(result1);
 
 
 // prints a list of all tracks, using the following format:
 // t01: Code Monkey by Jonathan Coulton (Thing a Week Three)
 // t02: Model View Controller by James Dempsey (WWDC 2003)
 // t03: Four Thirty-Three by John Cage (Woodstock 1952)
-// const printTracks = function() {
-//        const libraryValue = Object.values(library);
-//        const output = [];
-//        const tracksBox = libraryValue[0];
-//        for (const parts in tracksBox){
-//               const track = tracksBox[parts];
-//               output.push(`${track.id}: ${track.name} by ${track.artist} (${track.album})`);
-//        }
-//        return output.join('\n');
-// }
-// const result2 = printTracks();
-// console.log(result2);
+const printTracks = function() {
+       const libraryValue = Object.values(library);
+       const output = [];
+       const tracksBox = libraryValue[0];
+       for (const parts in tracksBox){
+              const track = tracksBox[parts];
+              output.push(`${track.id}: ${track.name} by ${track.artist} (${track.album})`);
+       }
+       return output.join('\n');
+}
+const result2 = printTracks();
+console.log(result2);
 
 
 // // prints a list of tracks for a given playlist, using the following format:
 // // p01: Coding Music - 2 tracks
 // // t01: Code Monkey by Jonathan Coulton (Thing a Week Three)
 // // t02: Model View Controller by James Dempsey (WWDC 2003)
-// const printPlaylist = function(playlistId) {
-//        const output = [];
-//        let trackList;
-//        const libraryValue = Object.values(library);
-//        const playListBox = libraryValue[1];
-//        const tracksBox = libraryValue[0];
-//        for (const parts in playListBox){
-//               const playList = playListBox[parts];
-//               if (playList.id === playlistId){
-//                      trackList = playList.tracks;
-//                      trackList.length < 2 ? output.push(`${playList.id}: ${playList.name} - ${trackList.length} track`) 
-//                      : output.push(`${playList.id}: ${playList.name} - ${trackList.length} tracks`);
-//               }
-//        }
-//        for (const parts in tracksBox){
-//               const track = tracksBox[parts];
-//               if (trackList.includes(track.id)){
-//                      output.push(`${track.id}: ${track.name} by ${track.artist} (${track.album})`)
-//               }
+const printPlaylist = function(playlistId) {
+       const output = [];
+       let trackList;
+       const libraryValue = Object.values(library);
+       const playListBox = libraryValue[1];
+       const tracksBox = libraryValue[0];
+       for (const parts in playListBox){
+              const playList = playListBox[parts];
+              if (playList.id === playlistId){
+                     trackList = playList.tracks;
+                     trackList.length < 2 ? output.push(`${playList.id}: ${playList.name} - ${trackList.length} track`) 
+                     : output.push(`${playList.id}: ${playList.name} - ${trackList.length} tracks`);
+              }
+       }
+       for (const parts in tracksBox){
+              const track = tracksBox[parts];
+              if (trackList.includes(track.id)){
+                     output.push(`${track.id}: ${track.name} by ${track.artist} (${track.album})`)
+              }
 
-//        }
-//        return output.join('\n');
+       }
+       return output.join('\n');
 
-// }
+}
 
 // const result3 = printPlaylist('p01');
 // console.log(result3);
@@ -132,22 +132,22 @@ const generateUid = function() {
 }
 
 //adds a track to the library
-// const addTrack = function(name, artist, album) {
-//        const trackObj = { id: generateUid(), name: name, artist: artist, album: album };
-//        const libraryValue = Object.values(library);
-//        const tracksBox = libraryValue[0];
-//        let trackNum = tracksInLibrary(tracksBox);
-//        tracksBox[trackNum] = trackObj;
-//        return tracksBox
-// }
-// const tracksInLibrary = (tracksBox) => {
-//        let num = 1;
-//        for (const tracks in tracksBox){
-//               num++
-//        }
-//        num < 10 ? num = `t0${num}` : num = `t${num}`;
-//        return num
-// }
+const addTrack = function(name, artist, album) {
+       const trackObj = { id: generateUid(), name: name, artist: artist, album: album };
+       const libraryValue = Object.values(library);
+       const tracksBox = libraryValue[0];
+       let trackNum = tracksInLibrary(tracksBox);
+       tracksBox[trackNum] = trackObj;
+       return tracksBox
+}
+const tracksInLibrary = (tracksBox) => {
+       let num = 1;
+       for (const tracks in tracksBox){
+              num++
+       }
+       num < 10 ? num = `t0${num}` : num = `t${num}`;
+       return num
+}
 // const result7 = addTrack('Doritos & Fritos','100 Gecs','10,000 Gecs');
 // console.table(result7);
 
@@ -172,8 +172,8 @@ const playListsInLibrary = (playListsBox) => {
        return num;
 }
 
-const result8 = addPlaylist('Bananas');
-console.table(result8);
+// const result8 = addPlaylist('Bananas');
+// console.table(result8);
 
 
 
